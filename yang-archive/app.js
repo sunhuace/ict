@@ -10,6 +10,15 @@ function openLightbox(src) {
   lb.classList.add('active');
 }
 
+// ── 懒加载：把当前页的 data-src 赋给 src ────────────────────────────────────
+function loadPageImages(page) {
+  document.querySelectorAll(`.posts article[data-page="${page}"] img[data-src]`).forEach(function (img) {
+    if (!img.src || img.src === window.location.href) {
+      img.src = img.dataset.src;
+    }
+  });
+}
+
 // ── Pagination ────────────────────────────────────────────────────────────────
 let currentPage = 1;
 
@@ -36,6 +45,9 @@ function showPage(page) {
     el.style.display = parseInt(el.dataset.page) === page ? '' : 'none';
   });
 
+  // 加载当前页图片
+  loadPageImages(page);
+
   // 渲染两处分页条
   ['pagination-top', 'pagination-bot'].forEach(function (id) {
     renderPagination(document.getElementById(id), page, totalPages);
@@ -57,10 +69,10 @@ function renderPagination(container, page, totalPages) {
     return b;
   }
 
-  container.appendChild(btn('«', 1,           false, page === 1));
-  container.appendChild(btn('‹', page - 1,    false, page === 1));
+  container.appendChild(btn('«', 1,        false, page === 1));
+  container.appendChild(btn('‹', page - 1, false, page === 1));
 
-  // 页码窗口：最多显示 7 个按钮
+  // 页码窗口：最多显示 7 个
   let start = Math.max(1, page - 3);
   let end   = Math.min(totalPages, start + 6);
   start     = Math.max(1, end - 6);
@@ -69,7 +81,7 @@ function renderPagination(container, page, totalPages) {
     container.appendChild(btn('1', 1, false, false));
     if (start > 2) {
       const dots = document.createElement('span');
-      dots.className   = 'page-dots';
+      dots.className = 'page-dots';
       dots.textContent = '…';
       container.appendChild(dots);
     }
@@ -82,25 +94,25 @@ function renderPagination(container, page, totalPages) {
   if (end < totalPages) {
     if (end < totalPages - 1) {
       const dots = document.createElement('span');
-      dots.className   = 'page-dots';
+      dots.className = 'page-dots';
       dots.textContent = '…';
       container.appendChild(dots);
     }
     container.appendChild(btn(String(totalPages), totalPages, false, false));
   }
 
-  container.appendChild(btn('›', page + 1, false, page === totalPages));
-  container.appendChild(btn('»', totalPages, false, page === totalPages));
+  container.appendChild(btn('›', page + 1,   false, page === totalPages));
+  container.appendChild(btn('»', totalPages,  false, page === totalPages));
 
-  // 页码跳转输入框
+  // 跳页输入框
   const wrap  = document.createElement('span');
   wrap.className = 'page-jump';
   const input = document.createElement('input');
-  input.type        = 'number';
-  input.min         = 1;
-  input.max         = totalPages;
-  input.value       = page;
-  input.className   = 'page-input';
+  input.type      = 'number';
+  input.min       = 1;
+  input.max       = totalPages;
+  input.value     = page;
+  input.className = 'page-input';
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
       const v = parseInt(this.value);
@@ -131,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  // 初始化分页，显示第 1 页
+  // 初始化：只显示第 1 页，只加载第 1 页图片
   showPage(1);
 
   // TOC 锚点点击：先切换到对应页再跳转
@@ -139,13 +151,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const a = e.target.closest('a[href^="#post-"]');
     if (!a) return;
     e.preventDefault();
-    const tid = a.getAttribute('href').slice(1); // "post-XXXX"
+    const tid     = a.getAttribute('href').slice(1);
     const article = document.getElementById(tid);
     if (!article) return;
     const targetPage = parseInt(article.dataset.page);
     if (targetPage !== currentPage) {
       showPage(targetPage);
-      // 等渲染完再滚动
       setTimeout(function () {
         const el = document.getElementById(tid);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -153,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       article.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    // 关闭 TOC
     document.getElementById('toc').classList.remove('open');
   });
 });
