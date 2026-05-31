@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Playbook</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -114,7 +115,14 @@
   .card-title { font-size: 1.08rem; font-weight: 700; color: var(--text); }
   .card-desc  { font-size: .87rem; color: var(--text2); line-height: 1.65; flex: 1; }
   .card-foot  { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
-  .badge { font-size: .7rem; padding: 3px 10px; border-radius: 100px; font-weight: 600; letter-spacing: .04em; }
+  .badge { font-size: .7rem; padding: 3px 10px; border-radius: 100px; font-weight: 600; letter-spacing: .04em; text-decoration: none; }
+a.badge:hover { opacity: .8; }
+  .card-links { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .res-item { display: flex; flex-direction: column; gap: 2px; padding: 7px 10px; border-radius: 8px; background: rgba(52,211,153,.08); border: 1px solid rgba(52,211,153,.2); text-decoration: none; transition: background .15s; }
+  .res-item:hover { background: rgba(52,211,153,.18); }
+  .res-title { font-size: .85rem; font-weight: 700; color: var(--green); display: flex; align-items: center; gap: 5px; }
+  .res-desc { font-size: .76rem; color: var(--text2); }
+  .bili-logo { width: 16px; height: 16px; flex-shrink: 0; vertical-align: middle; }
   .b-live   { background: rgba(52,211,153,.15);  color: var(--green); }
   .b-wip    { background: rgba(240,180,41,.15);   color: var(--gold);  }
   .b-soon   { background: rgba(139,147,168,.1);   color: var(--text2); }
@@ -227,15 +235,25 @@
       </div>
     </a>
 
-    <a href="resources/index.html" class="card card-link c-green">
-      <div class="card-icon i-green">🔗</div>
-      <div class="card-title">资源推荐</div>
-      <p class="card-desc">精选 ICT 视频、学习路径、工具清单、推荐阅读，过滤噪音直接上手。</p>
-      <div class="card-foot">
-        <span class="badge b-soon">即将上线</span>
-        <span class="arrow">↗</span>
-      </div>
-    </a>
+<div class="card c-green">
+<div class="card-icon i-green">🔗</div>
+<div class="card-title">资源推荐</div>
+<p class="card-desc">精选 ICT 学习资源，过滤噪音直接上手。</p>
+<div class="card-links">
+<a href="https://space.bilibili.com/357927138" target="_blank" rel="noopener" class="res-item">
+  <span class="res-title"><svg class="bili-logo" viewBox="0 0 24 24" fill="#fb7299" xmlns="http://www.w3.org/2000/svg"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.789 1.894v7.52c.02.764.283 1.396.789 1.894.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.13.789-1.894v-7.52c-.02-.765-.283-1.396-.789-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/></svg> ICT 大中华区头号布道者</span>
+  <span class="res-desc">没有之一，最硬核的机构交易中文讲解</span>
+</a>
+<a href="https://space.bilibili.com/457170233" target="_blank" rel="noopener" class="res-item">
+  <span class="res-title"><svg class="bili-logo" viewBox="0 0 24 24" fill="#fb7299" xmlns="http://www.w3.org/2000/svg"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.789 1.894v7.52c.02.764.283 1.396.789 1.894.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.13.789-1.894v-7.52c-.02-.765-.283-1.396-.789-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/></svg> Yang 姐 · B 站</span>
+  <span class="res-desc">ICT 实战解读、盘面分析、交易心得</span>
+</a>
+<a href="https://smc.cool/" target="_blank" rel="noopener" class="res-item">
+  <span class="res-title">🌐 smc.cool</span>
+  <span class="res-desc">SMC 资源站</span>
+</a>
+</div>
+</div>
 
     <a href="about/index.html" class="card card-link c-red">
       <div class="card-icon i-red">👤</div>
