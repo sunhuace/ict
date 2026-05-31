@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICT 策略 &amp; 概念 · The Playbook</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:     #0d0f14;
+  --bg2:    #13161e;
+  --bg3:    #1a1e28;
+  --border: #252a38;
+  --text:   #e2e6f0;
+  --text2:  #8b93a8;
+  --accent: #4f8ef7;
+  --accent2:#7c3aed;
+  --gold:   #f0b429;
+  --green:  #34d399;
+  --red:    #f87171;
+  --radius: 14px;
+  --font:   -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; min-height: 100vh; }
+a { color: inherit; text-decoration: none; }
+
+/* Nav */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,15,20,.88);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-size: 1rem; font-weight: 800; letter-spacing: -.02em; }
+.nav-logo span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.nav-links { display: flex; gap: 4px; list-style: none; }
+.nav-links a { font-size: .85rem; color: var(--text2); padding: 6px 12px; border-radius: 8px; transition: color .15s, background .15s; }
+.nav-links a:hover, .nav-links a.active { color: var(--text); background: var(--bg3); }
+
+/* Page header */
+.page-header {
+  position: relative; overflow: hidden;
+  padding: 72px 24px 56px; text-align: center;
+}
+.page-header-glow {
+  position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 400px;
+  background: radial-gradient(ellipse at 50% 30%, rgba(124,58,237,.18) 0%, rgba(79,142,247,.08) 50%, transparent 70%);
+  pointer-events: none;
+}
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(124,58,237,.12); border: 1px solid rgba(124,58,237,.25);
+  border-radius: 100px; padding: 5px 16px;
+  font-size: .75rem; color: #a78bfa; letter-spacing: .06em; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.page-header h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.08;
+  margin-bottom: 14px;
+  background: linear-gradient(150deg, #fff 20%, #8b93a8 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.page-header p { font-size: 1rem; color: var(--text2); max-width: 480px; margin: 0 auto; }
+
+/* Layout */
+.layout { display: flex; max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; gap: 32px; align-items: flex-start; }
+
+/* Sidebar TOC */
+.sidebar {
+  width: 220px; flex-shrink: 0; position: sticky; top: 76px;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px 0; max-height: calc(100vh - 100px); overflow-y: auto;
+}
+.sidebar-title { font-size: .7rem; font-weight: 700; color: var(--text2); letter-spacing: .1em; text-transform: uppercase; padding: 0 20px 12px; }
+.toc-group { margin-bottom: 8px; }
+.toc-group-label { font-size: .72rem; color: var(--text2); padding: 6px 20px 2px; opacity: .6; }
+.toc-item { display: block; padding: 6px 20px; font-size: .84rem; color: var(--text2); border-left: 2px solid transparent; transition: color .15s, border-color .15s, background .15s; }
+.toc-item:hover, .toc-item.active { color: var(--text); border-left-color: var(--accent); background: rgba(79,142,247,.06); }
+
+/* Main content */
+.main { flex: 1; min-width: 0; }
+
+/* Section */
+.section { margin-bottom: 56px; scroll-margin-top: 76px; }
+.section-head {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border);
+}
+.section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+.section-head h2 { font-size: 1.25rem; font-weight: 800; color: var(--text); }
+.section-head .sec-badge { font-size: .7rem; padding: 3px 9px; border-radius: 6px; font-weight: 600; margin-left: auto; }
+
+/* Concept cards grid */
+.concepts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+
+/* Concept card */
+.concept {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 22px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color .2s;
+}
+.concept:hover { border-color: rgba(79,142,247,.3); }
+.concept-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.concept-name { font-size: 1rem; font-weight: 700; color: var(--text); }
+.concept-en { font-size: .78rem; color: var(--text2); font-weight: 400; margin-top: 1px; }
+.ctag { font-size: .68rem; padding: 2px 8px; border-radius: 5px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+.ct-struct  { background: rgba(79,142,247,.12);  color: var(--accent); }
+.ct-liq     { background: rgba(52,211,153,.12);  color: var(--green); }
+.ct-time    { background: rgba(240,180,41,.12);  color: var(--gold); }
+.ct-model   { background: rgba(124,58,237,.12);  color: #a78bfa; }
+.ct-algo    { background: rgba(248,113,113,.12); color: var(--red); }
+.concept-body { font-size: .85rem; color: var(--text2); line-height: 1.7; }
+.concept-body strong { color: var(--text); font-weight: 600; }
+.concept-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.concept-tag { font-size: .69rem; padding: 2px 8px; border-radius: 5px; background: var(--bg3); border: 1px solid var(--border); color: var(--text2); }
+
+/* Full-width concept (for important ones) */
+.concept-full { grid-column: 1 / -1; }
+.concept-full .concept-body { columns: 2; column-gap: 32px; }
+@media (max-width: 640px) { .concept-full .concept-body { columns: 1; } }
+
+/* Table */
+.ref-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+.ref-table th { text-align: left; padding: 10px 14px; color: var(--text2); font-weight: 600; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--border); background: var(--bg3); }
+.ref-table td { padding: 10px 14px; border-bottom: 1px solid rgba(37,42,56,.6); vertical-align: top; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table tr:hover td { background: rgba(255,255,255,.02); }
+.td-name { font-weight: 600; color: var(--text); white-space: nowrap; }
+.td-abbr { color: var(--accent); font-size: .78rem; font-family: monospace; white-space: nowrap; }
+.td-desc { color: var(--text2); }
+.td-tier { font-size: .72rem; }
+.tier-h { color: var(--red); font-weight: 600; }
+.tier-m { color: var(--gold); font-weight: 600; }
+.tier-l { color: var(--text2); }
+
+/* Callout */
+.callout { background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); padding: 16px 20px; font-size: .88rem; color: var(--text2); line-height: 1.7; margin-bottom: 16px; }
+.callout strong { color: var(--text); }
+.callout.gold  { border-left-color: var(--gold); }
+.callout.green { border-left-color: var(--green); }
+.callout.red   { border-left-color: var(--red); }
+.callout.purple{ border-left-color: #a78bfa; }
+
+/* Sequence / steps */
+.steps { display: flex; flex-direction: column; gap: 12px; }
+.step { display: flex; gap: 16px; align-items: flex-start; }
+.step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(79,142,247,.15); border: 1px solid rgba(79,142,247,.25); color: var(--accent); font-size: .8rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.step-body { font-size: .88rem; color: var(--text2); line-height: 1.65; }
+.step-body strong { color: var(--text); }
+
+/* Table wrapper */
+.table-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+
+/* Responsive */
+@media (max-width: 800px) {
+  .layout { flex-direction: column; }
+  .sidebar { width: 100%; position: static; max-height: none; }
+  .concepts-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  nav { padding: 0 16px; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">The <span>Playbook</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html">首页</a></li>
+    <li><a href="#" class="active">ICT 概念</a></li>
+    <li><a href="../yang-archive/index.html">Yang 归档 ↗</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-glow"></div>
+  <div class="eyebrow">📐 ICT · Smart Money Concepts</div>
+  <h1>ICT 策略 &amp; 概念</h1>
+  <p>系统梳理 ICT 核心框架，从市场结构到入场模型，完整离线可查。</p>
+</div>
+
+<div class="layout">
+
+  <!-- Sidebar TOC -->
+  <aside class="sidebar">
+    <div class="sidebar-title">目录</div>
+
+    <div class="toc-group">
+      <div class="toc-group-label">基础框架</div>
+      <a href="#pd-arrays"   class="toc-item">PD Arrays</a>
+      <a href="#structure"   class="toc-item">市场结构</a>
+      <a href="#liquidity"   class="toc-item">流动性</a>
+    </div>
+    <div class="toc-group">
+      <div class="toc-group-label">时间与节奏</div>
+      <a href="#killzones"   class="toc-item">Kill Zones</a>
+      <a href="#sessions"    class="toc-item">盘面节奏</a>
+    </div>
+    <div class="toc-group">
+      <div class="toc-group-label">入场模型</div>
+      <a href="#models"      class="toc-item">入场模型</a>
+      <a href="#judas"       class="toc-item">Judas Swing</a>
+    </div>
+    <div class="toc-group">
+      <div class="toc-group-label">算法与交付</div>
+      <a href="#ipda"        class="toc-item">IPDA</a>
+      <a href="#delivery"    class="toc-item">价格交付</a>
+    </div>
+    <div class="toc-group">
+      <div class="toc-group-label">参考速查</div>
+      <a href="#glossary"    class="toc-item">术语表</a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- PD Arrays -->
+    <section class="section" id="pd-arrays">
+      <div class="section-head">
+        <div class="section-icon" style="background:rgba(79,142,247,.12)">📍</div>
+        <h2>PD Arrays — 价格交付区间</h2>
+        <span class="sec-badge" style="background:rgba(79,142,247,.12);color:var(--accent)">结构</span>
+      </div>
+
+      <div class="callout">
+        <strong>核心思想：</strong>PD Arrays（Premium/Discount Arrays）是 ICT 框架中价格<strong>吸收流动性并触发反转</strong>的关键结构区域。理解哪些结构位处于 Premium（高溢价区）、哪些处于 Discount（折价区）是入场的前提。
+      </div>
+
+      <div class="concepts-grid">
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Fair Value Gap</div>
+              <div class="concept-en">FVG / Imbalance</div>
+            </div>
+            <span class="ctag ct-struct">结构</span>
+          </div>
+          <div class="concept-body">
+            三根 K 线中第一根高点与第三根低点之间的<strong>未被交易的价格区间</strong>。市场倾向于回填此缺口再继续原方向，是最常用的短期 PD Array 入场点。<br><br>
+            看涨 FVG：第1根低点 &gt; 第3根高点；看跌 FVG：第1根高点 &lt; 第3根低点。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">3-candle</span><span class="concept-tag">Imbalance</span><span class="concept-tag">50% entry</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Order Block</div>
+              <div class="concept-en">OB</div>
+            </div>
+            <span class="ctag ct-struct">结构</span>
+          </div>
+          <div class="concept-body">
+            机构下单前的<strong>最后一根反向 K 线</strong>。看涨 OB：价格上破结构前的最后一根看跌 K；看跌 OB：价格下破结构前的最后一根看涨 K。<br><br>
+            OB 的 50% 是首选入场位，整个 OB 区间是防守范围。未被"消耗"的 OB 权重更高。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Last down candle</span><span class="concept-tag">50% level</span><span class="concept-tag">HTF priority</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Breaker Block</div>
+              <div class="concept-en">Breaker</div>
+            </div>
+            <span class="ctag ct-struct">结构</span>
+          </div>
+          <div class="concept-body">
+            OB 被价格击穿后<strong>转变角色</strong>的区域。原看涨 OB 被下破后成为看跌 Breaker，价格回抽时提供阻力，反之亦然。<br><br>
+            Breaker 的成立需要先有结构突破（BOS/MSB），再由价格回抽确认。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Failed OB</span><span class="concept-tag">Role reversal</span><span class="concept-tag">BOS first</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Mitigation Block</div>
+              <div class="concept-en">Mitigation</div>
+            </div>
+            <span class="ctag ct-struct">结构</span>
+          </div>
+          <div class="concept-body">
+            机构在<strong>亏损头寸上的平仓区域</strong>，通常是在价格重返 OB 附近时成交的对冲单。回到此区后流动性被吸收，价格转向概率高。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Hedge</span><span class="concept-tag">Loss mitigation</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Rejection Block</div>
+              <div class="concept-en">RB</div>
+            </div>
+            <span class="ctag ct-struct">结构</span>
+          </div>
+          <div class="concept-body">
+            带有长上影/下影的 K 线，影线本身形成一个<strong>抑制/支撑区间</strong>。价格再次进入影线区时常见快速反转。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Wick zone</span><span class="concept-tag">Rejection</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Void / Vacuum</div>
+              <div class="concept-en">Price Void</div>
+            </div>
+            <span class="ctag ct-struct">结构</span>
+          </div>
+          <div class="concept-body">
+            大幅单边 K 线形成的<strong>价格真空带</strong>，成交极少。类似 FVG 但范围更大。价格在真空带内运行阻力极小，常以连续涨/跌方式穿越。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Large candle</span><span class="concept-tag">Low volume area</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Market Structure -->
+    <section class="section" id="structure">
+      <div class="section-head">
+        <div class="section-icon" style="background:rgba(52,211,153,.12)">🏗️</div>
+        <h2>市场结构</h2>
+        <span class="sec-badge" style="background:rgba(52,211,153,.12);color:var(--green)">结构</span>
+      </div>
+
+      <div class="callout green">
+        <strong>多时间框架优先级：</strong>HTF（月/周/日）定方向偏向（Bias），LTF（4H/1H/15m）找入场结构，M1/M5 精确触发。永远不逆 HTF 结构操作。
+      </div>
+
+      <div class="concepts-grid">
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Break of Structure</div>
+              <div class="concept-en">BOS</div>
+            </div>
+            <span class="ctag ct-struct">结构</span>
+          </div>
+          <div class="concept-body">
+            趋势延续信号。价格<strong>顺势突破前一个摆动高/低点</strong>，确认原有趋势仍在继续，可用于追趋势的 Continuation 型入场。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Trend continuation</span><span class="concept-tag">Swing H/L</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Change of Character</div>
+              <div class="concept-en">CHoCH</div>
+            </div>
+            <span class="ctag ct-struct">结构</span>
+          </div>
+          <div class="concept-body">
+            趋势<strong>初步转变</strong>信号。在下跌趋势中，价格首次突破前一个局部高点；上升趋势中首次跌破前一低点。是反转的早期预警。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Early reversal</span><span class="concept-tag">First signal</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Market Structure Break</div>
+              <div class="concept-en">MSB</div>
+            </div>
+            <span class="ctag ct-struct">结构</span>
+          </div>
+          <div class="concept-body">
+            相比 CHoCH 更强的反转确认。价格突破<strong>更高时间框架的关键摆动点</strong>，表明结构已发生实质性转变，原趋势终结。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">HTF confirmation</span><span class="concept-tag">Strong reversal</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Swing High / Low</div>
+              <div class="concept-en">SH / SL</div>
+            </div>
+            <span class="ctag ct-struct">结构</span>
+          </div>
+          <div class="concept-body">
+            <strong>Internal Swing：</strong>趋势中内部的次级高/低点，构成 BOS 的参考。<br><br>
+            <strong>External Swing：</strong>HTF 级别的主要摆动高/低点，突破意味着 MSB。两者优先级不同，需区别对待。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Internal</span><span class="concept-tag">External</span><span class="concept-tag">HTF vs LTF</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">CISD</div>
+              <div class="concept-en">Change in State of Delivery</div>
+            </div>
+            <span class="ctag ct-struct">结构</span>
+          </div>
+          <div class="concept-body">
+            价格交付状态的<strong>HTF 级别转变</strong>。从看涨交付转为看跌（或反之），通常需要一根强力收盘 K 线配合 BOS 共同确认，权重高于单纯的 CHoCH。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">HTF</span><span class="concept-tag">Strong candle</span><span class="concept-tag">High probability</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Liquidity -->
+    <section class="section" id="liquidity">
+      <div class="section-head">
+        <div class="section-icon" style="background:rgba(52,211,153,.12)">💧</div>
+        <h2>流动性</h2>
+        <span class="sec-badge" style="background:rgba(52,211,153,.12);color:var(--green)">流动性</span>
+      </div>
+
+      <div class="callout green">
+        <strong>核心逻辑：</strong>机构需要大量对手方才能成交，散户止损单（聚集在明显高低点之外）就是这些流动性。价格<strong>猎取流动性 → 真实方向</strong>是 ICT 交易的核心叙事。
+      </div>
+
+      <div class="concepts-grid">
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Buy-side / Sell-side Liquidity</div>
+              <div class="concept-en">BSL / SSL</div>
+            </div>
+            <span class="ctag ct-liq">流动性</span>
+          </div>
+          <div class="concept-body">
+            <strong>BSL（买方流动性）：</strong>前高/等高处聚集的做空止损单，价格上破后机构做空。<br><br>
+            <strong>SSL（卖方流动性）：</strong>前低/等低处聚集的做多止损单，价格下破后机构做多。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Stop clusters</span><span class="concept-tag">EQH/EQL</span><span class="concept-tag">Hunt then reverse</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Equal Highs / Lows</div>
+              <div class="concept-en">EQH / EQL</div>
+            </div>
+            <span class="ctag ct-liq">流动性</span>
+          </div>
+          <div class="concept-body">
+            多个高点/低点处于<strong>同一价格水平</strong>，意味着此处聚集了大量止损单，是高价值的流动性目标。<br><br>
+            两次等高 / 三次等高（Triple Top 形态）都是 BSL 猎取目标，EQL 同理。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Double top/bot</span><span class="concept-tag">Stop clusters</span><span class="concept-tag">High value target</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Liquidity Void</div>
+              <div class="concept-en">LV</div>
+            </div>
+            <span class="ctag ct-liq">流动性</span>
+          </div>
+          <div class="concept-body">
+            快速单边行情形成的<strong>低成交区间</strong>，价格运行阻力极小。可视为磁铁，价格倾向于回测或穿越此区域补充交易。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Low resistance</span><span class="concept-tag">Magnet</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Inducement</div>
+              <div class="concept-en">IDM</div>
+            </div>
+            <span class="ctag ct-liq">流动性</span>
+          </div>
+          <div class="concept-body">
+            机构<strong>故意设置的诱饵结构</strong>，引散户在错误方向建仓后猎取其止损。常见形式：假突破、假 BOS、假支撑阻力。<br><br>
+            识别 IDM：价格在明显结构点突破后<strong>无 OB / FVG 支撑</strong>，快速拉回。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Fake break</span><span class="concept-tag">Trap</span><span class="concept-tag">No OB support</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Kill Zones -->
+    <section class="section" id="killzones">
+      <div class="section-head">
+        <div class="section-icon" style="background:rgba(240,180,41,.12)">⏰</div>
+        <h2>Kill Zones — 黄金交易时段</h2>
+        <span class="sec-badge" style="background:rgba(240,180,41,.12);color:var(--gold)">时间</span>
+      </div>
+
+      <div class="callout gold">
+        <strong>原则：只在 Kill Zone 内入场。</strong>KZ 之外的行情噪音多、方向不稳，即便方向判断正确，执行成本也远高于 KZ 内。
+      </div>
+
+      <div class="table-wrap" style="margin-bottom:20px">
+        <table class="ref-table">
+          <thead><tr>
+            <th>时段（纽约时间）</th>
+            <th>北京时间（夏令）</th>
+            <th>名称</th>
+            <th>主要功能</th>
+            <th>优先级</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td class="td-name">8pm – 10pm</td>
+              <td class="td-abbr">08:00–10:00</td>
+              <td>Asian Range</td>
+              <td class="td-desc">建立亚盘高低点（流动性池），为后续猎取做准备</td>
+              <td><span class="tier-l">参考</span></td>
+            </tr>
+            <tr>
+              <td class="td-name">2am – 5am</td>
+              <td class="td-abbr">14:00–17:00</td>
+              <td>London Kill Zone</td>
+              <td class="td-desc">猎取亚盘高低点 → 建立真实方向，是外汇最强 KZ</td>
+              <td><span class="tier-h">⚑ 高</span></td>
+            </tr>
+            <tr>
+              <td class="td-name">7am – 10am</td>
+              <td class="td-abbr">19:00–22:00</td>
+              <td>NY AM Kill Zone</td>
+              <td class="td-desc">延续伦敦方向或 Judas Swing 反转，外汇+指数均适用</td>
+              <td><span class="tier-h">⚑ 高</span></td>
+            </tr>
+            <tr>
+              <td class="td-name">9:30am – 11am</td>
+              <td class="td-abbr">21:30–23:00</td>
+              <td>NY Open (Equities)</td>
+              <td class="td-desc">股指专用，开盘 Judas Swing + 方向确认</td>
+              <td><span class="tier-h">⚑ 高（指数）</span></td>
+            </tr>
+            <tr>
+              <td class="td-name">1:30pm – 3pm</td>
+              <td class="td-abbr">次日 01:30–03:00</td>
+              <td>NY PM Kill Zone</td>
+              <td class="td-desc">午后流动性延续或收盘反转，权重低于 AM</td>
+              <td><span class="tier-m">中</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <strong>CBDR（Central Bank Dealers Range）：</strong>纽约时间下午 2pm–5pm，央行交易员建仓区间，次日方向偏向的重要参考。CBDR 上轨被突破 → 看涨偏向；下轨被突破 → 看跌偏向。
+      </div>
+    </section>
+
+    <!-- Sessions -->
+    <section class="section" id="sessions">
+      <div class="section-head">
+        <div class="section-icon" style="background:rgba(240,180,41,.12)">🕐</div>
+        <h2>盘面节奏 — 日内价格运动规律</h2>
+        <span class="sec-badge" style="background:rgba(240,180,41,.12);color:var(--gold)">时间</span>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body"><strong>亚盘（建仓期）</strong> — 价格窄幅震荡，构建亚盘高低点流动性池，机构静默持仓。</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body"><strong>伦敦开盘（猎取期）</strong> — 猎取亚盘一侧流动性（BSL 或 SSL），形成 Judas Swing 假突破，然后确立真实方向。</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body"><strong>纽约早盘（交付期）</strong> — 延续伦敦方向或在 9:30 再次猎取后继续，价格大幅交付，是一天中收益最高的窗口。</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body"><strong>纽约午后（消化期）</strong> — 行情放缓，价格回填盘中 FVG，此段操作谨慎，避免过度交易。</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body"><strong>收盘（平仓期）</strong> — 日内持仓机构平仓，方向可能短暂反转，不适合追入新头寸。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Models -->
+    <section class="section" id="models">
+      <div class="section-head">
+        <div class="section-icon" style="background:rgba(124,58,237,.12)">🎯</div>
+        <h2>入场模型</h2>
+        <span class="sec-badge" style="background:rgba(124,58,237,.12);color:#a78bfa">模型</span>
+      </div>
+
+      <div class="callout purple">
+        <strong>ICT 入场的三要素：</strong>① HTF Bias（方向偏向）→ ② PD Array（结构区域）→ ③ KZ 内 LTF 触发（时间确认）。三者缺一不可。
+      </div>
+
+      <div class="concepts-grid">
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">OTE 入场</div>
+              <div class="concept-en">Optimal Trade Entry</div>
+            </div>
+            <span class="ctag ct-model">模型</span>
+          </div>
+          <div class="concept-body">
+            将 Fibonacci 62%–79% 回撤与 OB / FVG 叠加的精确入场区。<br><br>
+            <strong>步骤：</strong>确认 MSB → 画 Fib（从摆动低点到高点）→ 62%–79% 区间内有 OB 或 FVG → KZ 内触发 → 入场。<br><br>
+            止损设在 Fib 100% 之外（摆动起点），目标指向流动性。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Fib 62–79%</span><span class="concept-tag">OB overlap</span><span class="concept-tag">KZ trigger</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">ICT 2022 Model</div>
+              <div class="concept-en">New York Open Model</div>
+            </div>
+            <span class="ctag ct-model">模型</span>
+          </div>
+          <div class="concept-body">
+            专为 NY 开盘（9:30–11:00 ET）设计的日内模型：<br><br>
+            ① 识别 9:30 前的 Judas Swing 方向<br>
+            ② 等待回撤至 HTF OB 或 FVG<br>
+            ③ 9:30–10:00 窗口内 M1 出现 BOS + OB 触发<br>
+            ④ 目标：当日高/低点流动性
+          </div>
+          <div class="concept-tags"><span class="concept-tag">9:30 NY</span><span class="concept-tag">M1 trigger</span><span class="concept-tag">Judas first</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Turtle Soup</div>
+              <div class="concept-en">Liquidity Hunt Reversal</div>
+            </div>
+            <span class="ctag ct-model">模型</span>
+          </div>
+          <div class="concept-body">
+            猎取 20 日高/低点止损后的反转型入场。价格突破 20 日高点（猎取 BSL）并迅速收回 → 看跌 Turtle Soup；反之看涨。<br><br>
+            需配合 HTF 看跌偏向 + 结构回撤进入 PD Array 使用。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">20-day H/L</span><span class="concept-tag">Stop hunt</span><span class="concept-tag">Quick reversal</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Power of 3</div>
+              <div class="concept-en">PO3 / AMD</div>
+            </div>
+            <span class="ctag ct-model">模型</span>
+          </div>
+          <div class="concept-body">
+            <strong>A — Accumulation（积累）：</strong>亚盘震荡，建立流动性池。<br>
+            <strong>M — Manipulation（操纵）：</strong>伦敦开盘假突破，猎取一侧止损。<br>
+            <strong>D — Distribution（交付）：</strong>NY 盘往真实方向大幅运动。<br><br>
+            日内、周线、月线均适用此框架。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">A–M–D</span><span class="concept-tag">Multi-TF</span><span class="concept-tag">Daily / Weekly</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Judas Swing -->
+    <section class="section" id="judas">
+      <div class="section-head">
+        <div class="section-icon" style="background:rgba(248,113,113,.12)">🎭</div>
+        <h2>Judas Swing — 开盘假突破</h2>
+        <span class="sec-badge" style="background:rgba(248,113,113,.12);color:var(--red)">模型</span>
+      </div>
+
+      <div class="callout red">
+        <strong>定义：</strong>在 Kill Zone 开盘时，价格先往<strong>相反方向假突破</strong>，猎取散户止损（BSL 或 SSL），然后快速反转进入真实方向。是 AMD 框架中"M — Manipulation"的具体体现。
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body"><strong>确定亚盘高低点</strong> — 亚盘（8pm–12am NY）形成的高低点是散户关注的突破方向。</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body"><strong>识别 HTF Bias</strong> — 通过日线/4H 的 PD Array 判断当日真实偏向（看涨或看跌）。</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body"><strong>等待反向猎取</strong> — 价格在 KZ 内向 Bias 反方向突破亚盘高/低点，快速猎取止损后收回区间。</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body"><strong>LTF 确认入场</strong> — 价格收回区间后，在 M1/M5 出现 BOS + OB 触发，顺 Bias 方向入场。</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body"><strong>目标：对面流动性</strong> — 反方向的 BSL/SSL，或日内 HTF FVG。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- IPDA -->
+    <section class="section" id="ipda">
+      <div class="section-head">
+        <div class="section-icon" style="background:rgba(248,113,113,.12)">📊</div>
+        <h2>IPDA — 算法数据区间</h2>
+        <span class="sec-badge" style="background:rgba(248,113,113,.12);color:var(--red)">算法</span>
+      </div>
+
+      <div class="callout red">
+        <strong>IPDA（Interbank Price Delivery Algorithm）：</strong>ICT 认为市场由算法驱动，价格在设定好的数据查找区间（Look Back Period）内有序地从一个 PD Array 交付到另一个，而非随机波动。
+      </div>
+
+      <div class="concepts-grid">
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Look Back Periods</div>
+              <div class="concept-en">20 / 40 / 60 交易日</div>
+            </div>
+            <span class="ctag ct-algo">算法</span>
+          </div>
+          <div class="concept-body">
+            算法在过去 <strong>20、40、60 个交易日</strong>的高低点之间寻找流动性目标。<br><br>
+            当前价格处于这三个区间中的什么位置（Premium 还是 Discount），决定了算法下一步的交付方向。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">20-day</span><span class="concept-tag">40-day</span><span class="concept-tag">60-day range</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Premium / Discount</div>
+              <div class="concept-en">PD Matrix</div>
+            </div>
+            <span class="ctag ct-algo">算法</span>
+          </div>
+          <div class="concept-body">
+            在 IPDA 区间内，50% 以上为 <strong>Premium（高溢价区）</strong>，机构倾向于在此卖出；50% 以下为 <strong>Discount（折价区）</strong>，机构倾向于在此买入。<br><br>
+            入场时永远在 Discount 做多，在 Premium 做空。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Above 50% = sell</span><span class="concept-tag">Below 50% = buy</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Quarterly Shift</div>
+              <div class="concept-en">Q-Shift</div>
+            </div>
+            <span class="ctag ct-algo">算法</span>
+          </div>
+          <div class="concept-body">
+            每个季度（1月、4月、7月、10月）算法重置方向，常伴随大级别流动性猎取和趋势转变。Q1 通常为 Q4 反向，是年内最重要的方向切换时点之一。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Jan Apr Jul Oct</span><span class="concept-tag">Q4 reversal</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Price Delivery -->
+    <section class="section" id="delivery">
+      <div class="section-head">
+        <div class="section-icon" style="background:rgba(124,58,237,.12)">⚡</div>
+        <h2>价格交付机制</h2>
+        <span class="sec-badge" style="background:rgba(124,58,237,.12);color:#a78bfa">算法</span>
+      </div>
+
+      <div class="concepts-grid">
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Smart Money Reversal</div>
+              <div class="concept-en">SMR</div>
+            </div>
+            <span class="ctag ct-model">模型</span>
+          </div>
+          <div class="concept-body">
+            机构在关键 PD Array 处的<strong>快速反转 K 线</strong>，通常表现为长影线 + 强势收盘。出现在 HTF OB 或 FVG 内部时权重极高，是 LTF 入场的高概率触发。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Long wick</span><span class="concept-tag">Strong close</span><span class="concept-tag">At PD array</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Silver Bullet</div>
+              <div class="concept-en">SB Strategy</div>
+            </div>
+            <span class="ctag ct-model">模型</span>
+          </div>
+          <div class="concept-body">
+            专注于三个 1 小时窗口的极简日内模型：<br>
+            <strong>3am–4am ET / 10am–11am ET / 2pm–3pm ET</strong><br><br>
+            在窗口内找 FVG（1分钟图），确认 BOS 后在 FVG 内入场，目标前高/低。单日最多操作一次。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">3 windows</span><span class="concept-tag">M1 FVG</span><span class="concept-tag">1 trade/day</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Unicorn Model</div>
+              <div class="concept-en">OB + FVG Confluence</div>
+            </div>
+            <span class="ctag ct-model">模型</span>
+          </div>
+          <div class="concept-body">
+            OB 与 FVG <strong>重叠区域</strong>形成的高概率入场点。两者叠加意味着既有机构下单（OB）又有未填补的失衡（FVG），交叉区间是最精确的 50% 入场位。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">OB + FVG overlap</span><span class="concept-tag">High confluence</span><span class="concept-tag">50%</span></div>
+        </div>
+
+        <div class="concept">
+          <div class="concept-head">
+            <div>
+              <div class="concept-name">Propulsion Block</div>
+              <div class="concept-en">PB</div>
+            </div>
+            <span class="ctag ct-struct">结构</span>
+          </div>
+          <div class="concept-body">
+            强势趋势行情中，价格<strong>快速穿越而未充分回测</strong>的 OB 区域。在大级别强势趋势中，价格通常会在 Propulsion Block 处获得支撑/阻力后继续原方向。
+          </div>
+          <div class="concept-tags"><span class="concept-tag">Strong trend</span><span class="concept-tag">Unmitigated OB</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Glossary -->
+    <section class="section" id="glossary">
+      <div class="section-head">
+        <div class="section-icon" style="background:rgba(139,147,168,.1)">📖</div>
+        <h2>术语速查表</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table class="ref-table">
+          <thead><tr>
+            <th>缩写</th>
+            <th>全称</th>
+            <th>中文</th>
+            <th>类别</th>
+          </tr></thead>
+          <tbody>
+            <tr><td class="td-abbr">FVG</td><td class="td-name">Fair Value Gap</td><td class="td-desc">公允价值缺口</td><td><span class="ctag ct-struct">结构</span></td></tr>
+            <tr><td class="td-abbr">OB</td><td class="td-name">Order Block</td><td class="td-desc">订单块</td><td><span class="ctag ct-struct">结构</span></td></tr>
+            <tr><td class="td-abbr">BB</td><td class="td-name">Breaker Block</td><td class="td-desc">突破块</td><td><span class="ctag ct-struct">结构</span></td></tr>
+            <tr><td class="td-abbr">BSL</td><td class="td-name">Buy-side Liquidity</td><td class="td-desc">买方流动性</td><td><span class="ctag ct-liq">流动性</span></td></tr>
+            <tr><td class="td-abbr">SSL</td><td class="td-name">Sell-side Liquidity</td><td class="td-desc">卖方流动性</td><td><span class="ctag ct-liq">流动性</span></td></tr>
+            <tr><td class="td-abbr">EQH</td><td class="td-name">Equal Highs</td><td class="td-desc">等高</td><td><span class="ctag ct-liq">流动性</span></td></tr>
+            <tr><td class="td-abbr">EQL</td><td class="td-name">Equal Lows</td><td class="td-desc">等低</td><td><span class="ctag ct-liq">流动性</span></td></tr>
+            <tr><td class="td-abbr">IDM</td><td class="td-name">Inducement</td><td class="td-desc">诱导</td><td><span class="ctag ct-liq">流动性</span></td></tr>
+            <tr><td class="td-abbr">BOS</td><td class="td-name">Break of Structure</td><td class="td-desc">结构突破</td><td><span class="ctag ct-struct">结构</span></td></tr>
+            <tr><td class="td-abbr">CHoCH</td><td class="td-name">Change of Character</td><td class="td-desc">特征转变</td><td><span class="ctag ct-struct">结构</span></td></tr>
+            <tr><td class="td-abbr">MSB</td><td class="td-name">Market Structure Break</td><td class="td-desc">市场结构突破</td><td><span class="ctag ct-struct">结构</span></td></tr>
+            <tr><td class="td-abbr">CISD</td><td class="td-name">Change in State of Delivery</td><td class="td-desc">交付状态转变</td><td><span class="ctag ct-struct">结构</span></td></tr>
+            <tr><td class="td-abbr">KZ</td><td class="td-name">Kill Zone</td><td class="td-desc">黄金交易时段</td><td><span class="ctag ct-time">时间</span></td></tr>
+            <tr><td class="td-abbr">CBDR</td><td class="td-name">Central Bank Dealers Range</td><td class="td-desc">央行交易员区间</td><td><span class="ctag ct-time">时间</span></td></tr>
+            <tr><td class="td-abbr">AMD</td><td class="td-name">Accumulation / Manipulation / Distribution</td><td class="td-desc">积累 / 操纵 / 交付</td><td><span class="ctag ct-model">模型</span></td></tr>
+            <tr><td class="td-abbr">OTE</td><td class="td-name">Optimal Trade Entry</td><td class="td-desc">最优入场</td><td><span class="ctag ct-model">模型</span></td></tr>
+            <tr><td class="td-abbr">PO3</td><td class="td-name">Power of Three</td><td class="td-desc">三驾马车</td><td><span class="ctag ct-model">模型</span></td></tr>
+            <tr><td class="td-abbr">SMR</td><td class="td-name">Smart Money Reversal</td><td class="td-desc">聪明钱反转</td><td><span class="ctag ct-model">模型</span></td></tr>
+            <tr><td class="td-abbr">SB</td><td class="td-name">Silver Bullet</td><td class="td-desc">银弹策略</td><td><span class="ctag ct-model">模型</span></td></tr>
+            <tr><td class="td-abbr">IPDA</td><td class="td-name">Interbank Price Delivery Algorithm</td><td class="td-desc">算法交付区间</td><td><span class="ctag ct-algo">算法</span></td></tr>
+            <tr><td class="td-abbr">HTF</td><td class="td-name">Higher Time Frame</td><td class="td-desc">高时间框架</td><td><span class="ctag ct-struct">结构</span></td></tr>
+            <tr><td class="td-abbr">LTF</td><td class="td-name">Lower Time Frame</td><td class="td-desc">低时间框架</td><td><span class="ctag ct-struct">结构</span></td></tr>
+            <tr><td class="td-abbr">PDA</td><td class="td-name">Premium / Discount Array</td><td class="td-desc">溢价 / 折价区</td><td><span class="ctag ct-algo">算法</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer style="border-top:1px solid #252a38;padding:32px 24px;text-align:center;color:#8b93a8;font-size:.82rem">
+  <p>The Playbook · ICT 概念 · 内容整理自 ICT 公开课程 &amp; <em style="color:#4f8ef7;font-style:normal">Yang · Smart Money</em> 知识星球</p>
+  <p style="margin-top:8px"><a href="../index.html" style="color:#4f8ef7">← 返回首页</a></p>
+</footer>
+
+<script>
+// Active sidebar item on scroll
+const sections = document.querySelectorAll('.section[id]');
+const tocLinks = document.querySelectorAll('.toc-item');
+function onScroll() {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  tocLinks.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
+</body>
+</html>

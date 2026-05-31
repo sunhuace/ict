@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <clipPath id="c"><circle cx="16" cy="16" r="15"/></clipPath>
+  </defs>
+  <circle cx="16" cy="16" r="16" fill="#1a7a4a"/>
+  <image href="avatars/496e7a25c756b63c.jpg" x="1" y="1" width="30" height="30" clip-path="url(#c)" preserveAspectRatio="xMidYMid slice"/>
+</svg>
